@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Emergency Prepared — Outage Map</title>
+  <meta name="description" content="Live map of flight, communications, internet and major service outages near you, with what to do about each.">
+  <meta name="theme-color" content="#16202c">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1><span class="logo" aria-hidden="true">!</span> Emergency Prepared</h1>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button role="tab" id="tab-map" aria-controls="panel-map" aria-selected="true" data-tab="map">Outage map</button>
+      <button role="tab" id="tab-help" aria-controls="panel-help" aria-selected="false" data-tab="help">What to do</button>
+      <button role="tab" id="tab-sources" aria-controls="panel-sources" aria-selected="false" data-tab="sources">Sources</button>
+    </nav>
+  </header>
+
+  <div id="banner" class="banner" role="status" aria-live="polite" hidden></div>
+
+  <main>
+    <section id="panel-map" role="tabpanel" aria-labelledby="tab-map" class="tabpanel map-layout">
+      <div class="map-wrap">
+        <div id="map" aria-label="Map of current outages"></div>
+        <div id="pick-hint" class="pick-hint" hidden>Tap the map where you are</div>
+      </div>
+
+      <aside class="side" aria-label="Outages list">
+        <div class="card location">
+          <div class="loc-row">
+            <div>
+              <div class="eyebrow">Your location</div>
+              <div id="loc-label" class="loc-label">Not set</div>
+            </div>
+            <label class="radius">Within
+              <select id="radius" aria-label="Alert radius">
+                <option value="25">25 mi</option>
+                <option value="50">50 mi</option>
+                <option value="100" selected>100 mi</option>
+                <option value="250">250 mi</option>
+              </select>
+            </label>
+          </div>
+          <div class="btn-row">
+            <button id="btn-locate" class="btn primary" type="button">Use my location</button>
+            <button id="btn-pick" class="btn" type="button">Pick on map</button>
+            <button id="btn-notify" class="btn" type="button" aria-pressed="false">Turn on alerts</button>
+          </div>
+          <p id="loc-msg" class="hint"></p>
+        </div>
+
+        <div class="filters" role="group" aria-label="Show on map">
+          <button class="chip" type="button" data-cat="flights" aria-pressed="true"><span class="glyph">✈︎</span> Flights <b id="n-flights">–</b></button>
+          <button class="chip" type="button" data-cat="alerts" aria-pressed="true"><span class="glyph">!</span> Alerts <b id="n-alerts">–</b></button>
+          <button class="chip" type="button" data-cat="internet" aria-pressed="true"><span class="glyph">≋</span> Internet <b id="n-internet">–</b></button>
+          <button class="chip" type="button" data-cat="services" aria-pressed="true"><span class="glyph">☁︎</span> Services <b id="n-services">–</b></button>
+        </div>
+
+        <div class="list-head">
+          <span id="updated" class="hint">Loading live data…</span>
+          <button id="btn-refresh" class="btn small" type="button">Refresh</button>
+        </div>
+
+        <div id="list" class="list" aria-live="polite"></div>
+      </aside>
+    </section>
+
+    <section id="panel-help" role="tabpanel" aria-labelledby="tab-help" class="tabpanel page" hidden>
+      <h2>What to do</h2>
+      <p class="lede">Impact and workarounds for each kind of outage. This page is saved on your device and works with no connection.</p>
+      <div id="help"></div>
+    </section>
+
+    <section id="panel-sources" role="tabpanel" aria-labelledby="tab-sources" class="tabpanel page" hidden>
+      <h2>Sources</h2>
+      <p class="lede">Everything on the map comes straight from these official feeds. If a feed cannot be reached, it is marked here rather than shown as “all clear”.</p>
+      <div id="sources"></div>
+      <h3>No public feed — check these directly</h3>
+      <p class="hint">Mobile carriers, power utilities and some large companies do not publish outage data that an app can read.</p>
+      <ul id="nofeed" class="links"></ul>
+      <h3>Privacy</h3>
+      <p class="hint">Your location is stored only on this device. To look up local alerts, coordinates rounded to about half a mile are sent to the National Weather Service (weather.gov). Nothing else leaves your device.</p>
+    </section>
+  </main>
+
+  <div id="toasts" class="toasts" aria-live="assertive"></div>
+
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
